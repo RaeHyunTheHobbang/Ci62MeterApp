@@ -1,0 +1,184 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MAIN_DIALOG DIALOGEX 0, 0, 567, 264
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "XDS4 SDK v1.2"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Connect",IDC_CONNECT,378,7,55,15
+    PUSHBUTTON      "Disconnect",IDC_DISCONNECT,443,7,55,15
+    LTEXT           "Command:",IDC_STATIC,7,28,33,8
+    DEFPUSHBUTTON   "Send",IDOK,403,42,30,15,NOT WS_VISIBLE | NOT WS_TABSTOP
+    CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,139,60,194,197
+    PUSHBUTTON      "Calibrate",IDC_CALIBRATE,505,24,55,15
+    PUSHBUTTON      "Measure",IDC_MEASURE,443,24,55,15
+    CONTROL         "",IDC_STATUS,"SysListView32",LVS_REPORT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,60,123,197
+    LTEXT           "Status:",IDC_STATIC,7,49,39,8
+    COMBOBOX        IDC_COMMAND,51,26,382,198,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_SPECTRO,51,7,109,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Instrument:",IDC_STATIC,7,9,36,8
+    PUSHBUTTON      "Configure",IDC_CONFIGURE,505,7,55,15
+    LTEXT           "Response:",IDC_STATIC,139,49,43,8
+    LTEXT           "Static",IDC_VERSION,171,9,114,8
+    PUSHBUTTON      "Retrieve Stored Samples",IDC_RETRIEVE,443,42,117,15
+    PUSHBUTTON      "Copy Selected Text",IDC_COPY,179,44,81,13
+    CONTROL         "Scan Mode",IDC_SCAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,49,65,8
+    CONTROL         "Preview",IDC_PREVIEW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,341,49,58,8
+    CONTROL         "",IDC_PICTURE,"Static",SS_BITMAP,341,60,219,185
+END
+
+IDD_CONFIGURE DIALOGEX 0, 0, 236, 138
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Configuration"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,179,7,50,14
+    RTEXT           "Setting 1:",IDC_SETTING1,11,9,65,8
+    COMBOBOX        IDC_OPTIONS1,82,7,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 2:",IDC_SETTING2,11,26,65,8
+    COMBOBOX        IDC_OPTIONS2,82,23,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 3:",IDC_SETTING3,11,43,65,8
+    COMBOBOX        IDC_OPTIONS3,82,40,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 4:",IDC_SETTING4,11,60,65,8
+    COMBOBOX        IDC_OPTIONS4,82,57,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 5:",IDC_SETTING5,11,77,65,8
+    COMBOBOX        IDC_OPTIONS5,82,74,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 6:",IDC_SETTING6,12,94,65,8
+    PUSHBUTTON      "Cancel",IDCANCEL,179,23,50,14
+    COMBOBOX        IDC_OPTIONS6,82,91,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Setting 6:",IDC_SETTING7,12,111,65,8
+    COMBOBOX        IDC_OPTIONS7,82,108,85,198,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_CALIBRATE DIALOGEX 0, 0, 211, 80
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Calibrate"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,154,59,50,14
+    CTEXT           "",IDC_MSG,7,19,197,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_MAIN_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 560
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 257
+    END
+
+    IDD_CONFIGURE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 229
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_CALIBRATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 73
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

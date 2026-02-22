@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+
+		<!-- exe 아이콘 -->
+		<ApplicationIcon>Resources\Imgs\Ci62OnImg.ico</ApplicationIcon>
+
+		<!-- self-contained 배포용 -->
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="View\" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- 네이티브 DLL: exe 옆에 떨어지게 강제 (가장 안전) -->
+		<Content Include="Resources\Ci62.dll">
+			<Link>Ci62.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="Resources\Imgs\BluetoothIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="Resources\Imgs\Ci62OffImg.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="Resources\Imgs\Ci62OnImg.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="Resources\Imgs\UsbIcon.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<!-- (선택) 런타임에서 ico를 pack URI로 쓰고 싶으면 Resource로도 포함 -->
+		<Resource Include="Resources\Imgs\Ci62OnImg.ico" />
+	</ItemGroup>
+
+</Project>

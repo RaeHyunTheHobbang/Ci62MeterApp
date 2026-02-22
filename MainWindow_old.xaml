@@ -1,0 +1,199 @@
+﻿<Window x:Class="MeterCi62App.MainWindow_old"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MeterCi62App"
+        mc:Ignorable="d"
+        Title="MainWindow_old" Height="450" Width="800">
+
+    <Window.Resources>
+        <!-- 버튼 스타일: 신뢰감 있는 블루 톤 -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#4F46E5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#6366F1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#4338CA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 텍스트박스 스타일: 깔끔한 라운드 스타일 -->
+        <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#4F46E5"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 로그 리스트박스 스타일 -->
+        <Style x:Key="ModernListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Style.Resources>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="8,4"/>
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Background="Transparent" BorderBrush="#F1F5F9" BorderThickness="0,0,0,1" Margin="0,0,0,2">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- 레이아웃 여백 설정 -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.7*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="SN:" VerticalAlignment="Bottom"></TextBlock>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding serialNum}" VerticalAlignment="Bottom"></TextBlock>
+        </Grid>
+        <!-- 메인 카드 컨테이너 -->
+        <Border Grid.Row="1" Grid.Column="1" 
+                Background="White" 
+                CornerRadius="12" 
+                BorderBrush="#E2E8F0" 
+                BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="270" RenderingBias="Quality" ShadowDepth="3" Opacity="0.1"/>
+            </Border.Effect>
+
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 상태 아이콘 영역 (좌측 상단) -->
+                <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!-- 연결 아이콘 -->
+                    <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#F1F5F9" CornerRadius="4"  >
+                        <Image  Stretch="Uniform" Source="{Binding conectIconSrc}"  />
+                    </Border>
+                    <!-- 전원/상태 이미지 -->
+                    <Border Grid.Row="1" Grid.ColumnSpan="2" Background="#F1F5F9" CornerRadius="4" >
+                        <Image Stretch="Uniform" Source="{Binding onOffImgSrc}" Margin="8"/>
+                    </Border>
+                </Grid>
+
+                <!-- URL 제어부 (우측 상단) -->
+                <Border Grid.Row="0" Grid.Column="1" Background="#F8FAFC" CornerRadius="8" Padding="15,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="URL" Foreground="#64748B" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,0,12,0"/>
+                        <TextBox Style="{StaticResource ModernTextBoxStyle}" 
+                                 Text="{Binding targetUrl}" 
+                                 Width="380" Height="42" FontSize="15" />
+                        <Button Style="{StaticResource ModernButtonStyle}" 
+                                Command="{Binding viewBtnCtrl}" 
+                                CommandParameter="urlSendStart" 
+                                Content="SEND DATA" 
+                                Width="100" Height="42" Margin="12,0,0,0"/>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- 하단 로그 섹션 -->
+                <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="0,20,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Ellipse Width="8" Height="8" Fill="#4F46E5" Margin="2,0,8,0"/>
+                        <TextBlock Text="SYSTEM LOG" Foreground="#475569" FontSize="11" FontWeight="ExtraBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <ListBox x:Name="logListBox" Grid.Row="1" 
+                             Style="{StaticResource ModernListBoxStyle}"
+                             ItemsSource="{Binding logSrc}" 
+                             FontSize="15"
+                             TargetUpdated="logListUpdated" >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Margin" Value="0,0,0,10"></Setter>
+                                <Setter Property="IsHitTestVisible" Value="False"></Setter>
+                                <Setter Property="Focusable" Value="False" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
