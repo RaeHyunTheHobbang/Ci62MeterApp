@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace MeterCi62App.ViewModel
 {
-    class ViewData : Notifier
+    public class ViewData : Notifier
     {
 
         protected string onImgPath = "/Resources/Imgs/Ci62OnImg.png";

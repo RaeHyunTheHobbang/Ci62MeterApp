@@ -11,7 +11,7 @@ using System.IO;
 
 namespace MeterCi62App.Model
 {
-    internal partial class Ci62Cmd
+    public partial class Ci62Cmd
     {
 
         string _priorSN = "027293";
@@ -41,7 +41,7 @@ namespace MeterCi62App.Model
 
         
 
-        internal Ci62Cmd() { }
+        public Ci62Cmd() { }
 
         public bool DeviceConnect()
         {

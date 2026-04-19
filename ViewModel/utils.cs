@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace MeterCi62App.ViewModel
 {
-    class Notifier : INotifyPropertyChanged
+    public class Notifier : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -52,6 +52,22 @@ namespace MeterCi62App.ViewModel
         {
             _curExecute(curParam);
 
+        }
+    }
+
+
+    public class BoolToColorConverter : System.Windows.Data.IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is bool && (bool)value)
+                return System.Windows.Media.Brushes.Yellow;
+            else
+                return System.Windows.Media.Brushes.White;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 

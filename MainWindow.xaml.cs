@@ -24,24 +24,48 @@ namespace MeterCi62App
     {
         Ci62Cmd CurCmd;
         MainViewModel curVm;
-
+        SettingWindow curSetWindow;
         bool CloseFlag;
 
         public MainWindow()
         {
             CurCmd = new Ci62Cmd();
             curVm = new MainViewModel(CurCmd);
+            
+
+            curVm.SettingWindowShowEvent += SettingShow;
             this.DataContext = curVm;
             this.Closing  += CloseHandler;
 
+            curSetWindow = new SettingWindow(curVm);
+            curSetWindow.DataContext = curVm;
+            curSetWindow.Closing += CloseHandler;
+
+        }
+
+        void SettingShow(object s,bool e)
+        {
+
+            curSetWindow.Left = this.Left + (this.Width - curSetWindow.Width) / 2;
+            curSetWindow.Top = this.Top + (this.Height - curSetWindow.Height) / 2;
+            if (curSetWindow.IsVisible)
+            {
+                curSetWindow.Activate();
+            }
+            curSetWindow.Show();
         }
 
         void CloseHandler(object sender,CancelEventArgs e)
         {
             e.Cancel= !CloseFlag;
             
-            if(!CloseFlag)
+            if (!CloseFlag)
                 this.WindowState = WindowState.Minimized;
+
+            if((sender as Window)==this)
+            {
+                curSetWindow.Close();
+            }
         }
 
 

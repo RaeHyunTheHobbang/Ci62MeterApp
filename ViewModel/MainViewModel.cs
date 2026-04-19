@@ -17,9 +17,9 @@ using System.Windows.Media.Imaging;
 
 namespace MeterCi62App.ViewModel
 {
-    class MainViewModel:ViewData
+    public class MainViewModel:ViewData
     {
-
+        public event EventHandler<bool> SettingWindowShowEvent;
         Thread connectThread;
         Thread calculateLabTread;
         Ci62Cmd deviceCmd;
@@ -30,21 +30,66 @@ namespace MeterCi62App.ViewModel
 
         RestApi curApi;
         string curURL;
-        const string UrlRegex =
-        @"^(https?:\/\/)" +                          // http or https
-        @"(([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}" +         // domain
-        @"|localhost" +                               // localhost
-        @"|(\d{1,3}\.){3}\d{1,3})" +                   // IPv4
-        @"(:\d{1,5})?" +                               // port
-        @"(\/[^\s]*)?$";                              // path/query
+        //const string UrlRegex =
+        //@"^(https?:\/\/)" +                          // http or https
+        //@"(([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}" +         // domain
+        //@"|localhost" +                               // localhost
+        //@"|(\d{1,3}\.){3}\d{1,3})" +                   // IPv4
+        //@"(:\d{1,5})?" +                               // port
+        //@"(\/[^\s]*)?$";                              // path/query
 
 
+        bool _isConnect;
+        public bool IsConnect
+        {
+            get => _isConnect;
+            set
+            {
+                _isConnect = value;
+                OnPropertyChanged(nameof(IsConnect));
+            }   
+        }
+        string _onOffInfoText;
+        public string onOffInfoText
+        {
+            get => _onOffInfoText;
+            set
+            {
+                _onOffInfoText = value;
+                OnPropertyChanged(nameof(onOffInfoText));
+            }
+        }
 
+        BitmapSource _settingBtnSrc;
+        public BitmapSource settingBtnSrc
+        {
+            get => _settingBtnSrc;
+            set
+            {
+                _settingBtnSrc = value;
+                OnPropertyChanged(nameof(settingBtnSrc));
+            }
+        }
+
+        BitmapSource _exitBtnSrc;
+        public BitmapSource exitBtnSrc
+        {
+            get => _exitBtnSrc;
+            set
+            {
+                _exitBtnSrc = value;
+                OnPropertyChanged(nameof(exitBtnSrc));
+            }
+        }
 
         public MainViewModel(Ci62Cmd curCmd)
         {
             deviceCmd = curCmd;
-            curURL = "";
+
+            //기본 URL세팅
+            targetUrl = "https://kcc-routing.kccworld.co.kr";
+            curURL = targetUrl;
+
             
             defaultSetting();
 
@@ -54,12 +99,20 @@ namespace MeterCi62App.ViewModel
         {
             WriteLog("DisConnected");
             connectVisualLoad();
-
+            onOffInfoText = "DisConnect";
             curApi = new RestApi();
 
+
+
             viewBtnCtrl = new BasicCommand(btnControl);
-
-
+            exitBtnSrc = new IconBitmapDecoder(
+                            new Uri("Resources/Imgs/OnOffBtn.ico", UriKind.Relative),
+                            BitmapCreateOptions.None,
+                            BitmapCacheOption.Default).Frames[0];
+            settingBtnSrc = new IconBitmapDecoder(
+                            new Uri("Resources/Imgs/SettingBtn.ico", UriKind.Relative),
+                            BitmapCreateOptions.None,
+                            BitmapCacheOption.Default).Frames[0];
 
             connectThread = new Thread(connectThreadControl);
             connectThread.IsBackground = true;
@@ -81,7 +134,8 @@ namespace MeterCi62App.ViewModel
                     case true:
 
                         onOffImgSrc = new BitmapImage(new Uri(onImgPath, UriKind.Relative));
-
+                        IsConnect = true;
+                        onOffInfoText = "Connect";
                         switch (deviceCmd.IsUsbMode)
                         {
                             case true:
@@ -99,7 +153,8 @@ namespace MeterCi62App.ViewModel
                         onOffImgSrc = new BitmapImage(new Uri(offImgPath, UriKind.Relative));
                         conectIconSrc = null;
                         serialNum = "";
-
+                        IsConnect = false;
+                        onOffInfoText = "DisConnect";
                         break;
 
                     default:
@@ -151,6 +206,17 @@ namespace MeterCi62App.ViewModel
                     //targetUrl
                     break;
 
+                case "Setting":
+                    SettingWindowShowEvent?.Invoke(this, true);
+
+                    break;
+
+
+                case "CloseAll":
+                    MessageBoxResult userAnswer=MessageBox.Show("프로그램을 종료하시겠습니까?", "알림", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if(userAnswer == MessageBoxResult.Yes)
+                        Environment.Exit(0);
+                    break;
                 default:
                     break;
             }
@@ -158,37 +224,16 @@ namespace MeterCi62App.ViewModel
         bool isValidUrl(string url)
         {   
             if(string.IsNullOrEmpty(url)) return false;
-            return Regex.IsMatch(url, UrlRegex);
+            //return Regex.IsMatch(url, UrlRegex);
+            return true;
         }
 
-        void getPriorLab()
-        {
-            int timeStrLen = new logMsg("").timeStamp.Length;
-            string spaces = new string(' ', timeStrLen + 5);
-
-            float[]? curSpectrumData=deviceCmd.GetPriorReflectance();
-            if(curSpectrumData is not null)
-            {
-                StringBuilder curSb = new StringBuilder();
-                curSb.AppendLine("## L a b Data ## ");
-                foreach (Illuminant illum in System.Enum.GetValues(typeof(Illuminant)))
-                {
-                    Lab? labValues = SpectralConverter.CalculateLab(curSpectrumData, illum);
-
-                    if (labValues is not null)
-                    {
-                        curSb.AppendLine(spaces + $"{illum.ToString()} ==> {labValues.ToString()}");
-                    }
-                }
-                WriteLog(curSb.ToString());
-
-            }
-        }
+        
 
         #region Thread Controller Method
         void connectThreadControl()
         {
-            bool conResult = false;
+            bool checkCon = false;
             bool isBluetoothMode = false;
             while (true)
             {
@@ -204,23 +249,23 @@ namespace MeterCi62App.ViewModel
                     isBluetoothMode = deviceCmd.SetBluetoothMode();
                     if (isBluetoothMode)
                     {
-                        conResult = deviceCmd.DeviceConnect();
+                        checkCon = deviceCmd.DeviceConnect();
 
-                        if (!conResult)
+                        if (!checkCon)
                         {
                             deviceCmd.SetUsbMode();
-                            conResult = deviceCmd.DeviceConnect();
+                            checkCon = deviceCmd.DeviceConnect();
                         }
 
                     }
                     else
                     {
                         deviceCmd.SetUsbMode();
-                        conResult = deviceCmd.DeviceConnect();
+                        checkCon = deviceCmd.DeviceConnect();
                     }
 
-                    Debug.WriteLine($"현재 연결 상태:{conResult}");
-                    tmpConnectCheck = conResult;
+                    Debug.WriteLine($"현재 연결 상태:{checkCon}");
+                    tmpConnectCheck = checkCon;
 
                     if (tmpConnectCheck)
                     {
@@ -261,7 +306,8 @@ namespace MeterCi62App.ViewModel
                         if (curSpectrumData is not null)
                         {   
                             StringBuilder curSb = new StringBuilder();
-                            calculatedTime  = DateTime.Now.ToString("MM-dd HH:mm:ss");
+                            //calculatedTime  = DateTime.Now.ToString("MM-dd HH:mm:ss");
+                            calculatedTime = DateTime.Now.ToString("HH:mm:ss");
                             curData = new Dictionary<string, Lab>();
 
                             curSb.AppendLine("## L a b Data ## ");
@@ -282,18 +328,12 @@ namespace MeterCi62App.ViewModel
                             //API Post 시작!
                             lock (curURL)
                             {
-                                
+                        
                                 if (!string.IsNullOrEmpty(curURL))
-                                {
-
-                                    foreach (string curillum in curData.Keys)
-                                    {
-                                        Lab curLab = curData[curillum];
-                                        bool postResult = curApi.Post(curURL, serialNum, curLab.L, curLab.a, curLab.b, calculatedTime).Result;
-                                        string logMsg = (postResult) ? $"Data Send Success to \"{curURL}\" " : $"Data Send Failed to \"{curURL}\" ";
-                                        WriteLog(logMsg);
-                                    }
-
+                                { 
+                                    bool postResult = curApi.Post(curURL, serialNum, curData, calculatedTime).Result;
+                                    string logMsg = (postResult) ? $"Data Send Success to \"{curURL}\" " : $"Data Send Failed to \"{curURL}\" ";
+                                    WriteLog(logMsg);
                                 }
                             }
                                 
@@ -309,6 +349,35 @@ namespace MeterCi62App.ViewModel
             }
         }
 
+        #endregion
+
+
+
+
+        #region Not used
+        void getPriorLab()
+        {
+            int timeStrLen = new logMsg("").timeStamp.Length;
+            string spaces = new string(' ', timeStrLen + 5);
+
+            float[]? curSpectrumData = deviceCmd.GetPriorReflectance();
+            if (curSpectrumData is not null)
+            {
+                StringBuilder curSb = new StringBuilder();
+                curSb.AppendLine("## L a b Data ## ");
+                foreach (Illuminant illum in System.Enum.GetValues(typeof(Illuminant)))
+                {
+                    Lab? labValues = SpectralConverter.CalculateLab(curSpectrumData, illum);
+
+                    if (labValues is not null)
+                    {
+                        curSb.AppendLine(spaces + $"{illum.ToString()} ==> {labValues.ToString()}");
+                    }
+                }
+                WriteLog(curSb.ToString());
+
+            }
+        }
         #endregion
     }
 }
