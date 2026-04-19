@@ -18,15 +18,22 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="URL" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-
             <TextBox Grid.Column="1" Text="{Binding targetUrl}" FontSize="13" TextAlignment="Left" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Height="25" ></TextBox>
-             
-            
+
+           
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TextBlock Text="D65_10 Only" FontSize="10" Padding="0,0,10,0"></TextBlock>
+                <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding D65OnlyOn}" ></CheckBox>
+            </StackPanel>
 
         </Grid>
         <Button Grid.Row="2" Grid.Column="1" Content="등록" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="30"

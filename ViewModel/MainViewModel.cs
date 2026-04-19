@@ -30,6 +30,7 @@ namespace MeterCi62App.ViewModel
 
         RestApi curApi;
         string curURL;
+        bool curD65OnlyMode;
         //const string UrlRegex =
         //@"^(https?:\/\/)" +                          // http or https
         //@"(([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,}" +         // domain
@@ -90,7 +91,9 @@ namespace MeterCi62App.ViewModel
             targetUrl = "https://kcc-routing.kccworld.co.kr";
             curURL = targetUrl;
 
-            
+            //D65 Only 모드 세팅
+            D65OnlyOn = false;
+
             defaultSetting();
 
         }
@@ -101,7 +104,7 @@ namespace MeterCi62App.ViewModel
             connectVisualLoad();
             onOffInfoText = "DisConnect";
             curApi = new RestApi();
-
+            
 
 
             viewBtnCtrl = new BasicCommand(btnControl);
@@ -196,9 +199,11 @@ namespace MeterCi62App.ViewModel
                     lock(curURL)
                     {
                         curURL = targetUrl;
+                        curD65OnlyMode = D65OnlyOn;
                     }
+                    string curMsg = (curD65OnlyMode) ? $"측정시 '{targetUrl}'로 D65만 전송됩니다." : $"측정시 '{targetUrl}'로 전송됩니다.";
                     MessageBox.Show(
-                                    $"측정시 '{targetUrl}'로 전송됩니다.",
+                                    curMsg,
                                     "알림",
                                     MessageBoxButton.OK,
                                     MessageBoxImage.Information
@@ -331,7 +336,7 @@ namespace MeterCi62App.ViewModel
                         
                                 if (!string.IsNullOrEmpty(curURL))
                                 { 
-                                    bool postResult = curApi.Post(curURL, serialNum, curData, calculatedTime).Result;
+                                    bool postResult = curApi.Post(curURL, serialNum, curData, calculatedTime, curD65OnlyMode).Result;
                                     string logMsg = (postResult) ? $"Data Send Success to \"{curURL}\" " : $"Data Send Failed to \"{curURL}\" ";
                                     WriteLog(logMsg);
                                 }

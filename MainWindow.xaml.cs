@@ -39,7 +39,7 @@ namespace MeterCi62App
 
             curSetWindow = new SettingWindow(curVm);
             curSetWindow.DataContext = curVm;
-            curSetWindow.Closing += CloseHandler;
+            
 
         }
 
@@ -62,10 +62,8 @@ namespace MeterCi62App
             if (!CloseFlag)
                 this.WindowState = WindowState.Minimized;
 
-            if((sender as Window)==this)
-            {
-                curSetWindow.Close();
-            }
+            curSetWindow.Close();
+
         }
 
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -40,25 +41,41 @@ namespace MeterCi62App.Model
 
 
 
-        public async Task<bool> Post(string url, string serialNum, Dictionary<string, Lab> curData , string time)
+        public async Task<bool> Post(string url, string serialNum, Dictionary<string, Lab> curData , string time, bool d65Only)
         {
-            KCCtype sendData = new KCCtype
+            KCCtype sendData;
+            if (d65Only)
             {
-                SN = serialNum,
-                LValue = curData[Illuminant.D65_10.ToString()].L,
-                AValue = curData[Illuminant.D65_10.ToString()].a,
-                BValue = curData[Illuminant.D65_10.ToString()].b,
+                sendData = new KCCtype
+                {
+                    SN = serialNum,
+                    LValue = curData[Illuminant.D65_10.ToString()].L,
+                    AValue = curData[Illuminant.D65_10.ToString()].a,
+                    BValue = curData[Illuminant.D65_10.ToString()].b,
+                    Time = time
+                };
+            }
+            else
+            {
+                sendData = new KCCtype
+                {
+                    SN = serialNum,
+                    LValue = curData[Illuminant.D65_10.ToString()].L,
+                    AValue = curData[Illuminant.D65_10.ToString()].a,
+                    BValue = curData[Illuminant.D65_10.ToString()].b,
 
-                LValue1 = curData[Illuminant.A_10.ToString()].L,
-                AValue1 = curData[Illuminant.A_10.ToString()].a,
-                BValue1 = curData[Illuminant.A_10.ToString()].b,
+                    LValue1 = curData[Illuminant.A_10.ToString()].L,
+                    AValue1 = curData[Illuminant.A_10.ToString()].a,
+                    BValue1 = curData[Illuminant.A_10.ToString()].b,
 
-                LValue2 = curData[Illuminant.F2_10.ToString()].L,
-                AValue2 = curData[Illuminant.F2_10.ToString()].a,
-                BValue2 = curData[Illuminant.F2_10.ToString()].b,
+                    LValue2 = curData[Illuminant.F2_10.ToString()].L,
+                    AValue2 = curData[Illuminant.F2_10.ToString()].a,
+                    BValue2 = curData[Illuminant.F2_10.ToString()].b,
 
-                Time = time
-            };
+                    Time = time
+                };
+            }
+                
             using (HttpClient client = new HttpClient())
             {
                 try

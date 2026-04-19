@@ -27,6 +27,7 @@ namespace MeterCi62App.ViewModel
 
         string _serialNum;
 
+        bool _d65OnlyOn;
         public string serialNum
         {
             get
@@ -91,6 +92,20 @@ namespace MeterCi62App.ViewModel
                 OnPropertyChanged(nameof(targetUrl));
             }
         }
+
+        public bool D65OnlyOn
+        {
+            get
+            {
+                return _d65OnlyOn;
+            }
+            set
+            {
+                _d65OnlyOn = value;
+                OnPropertyChanged(nameof(D65OnlyOn));
+            }
+        }
+
 
         public struct logMsg(string curMsg,string curTime=null)
         {
