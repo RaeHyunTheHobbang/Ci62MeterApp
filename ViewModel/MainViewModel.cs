@@ -29,7 +29,6 @@ namespace MeterCi62App.ViewModel
         int tmpDataCount;
 
         RestApi curApi;
-        string curURL;
         bool curD65OnlyMode;
         //const string UrlRegex =
         //@"^(https?:\/\/)" +                          // http or https
@@ -38,6 +37,8 @@ namespace MeterCi62App.ViewModel
         //@"|(\d{1,3}\.){3}\d{1,3})" +                   // IPv4
         //@"(:\d{1,5})?" +                               // port
         //@"(\/[^\s]*)?$";                              // path/query
+        
+        string curURL;
 
 
         bool _isConnect;
@@ -89,7 +90,7 @@ namespace MeterCi62App.ViewModel
 
             //기본 URL세팅
             targetUrl = "https://kcc-routing.kccworld.co.kr";
-            curURL = targetUrl;
+            curURL = SetURL(targetUrl);
 
             //D65 Only 모드 세팅
             D65OnlyOn = false;
@@ -181,6 +182,13 @@ namespace MeterCi62App.ViewModel
             });
         }
 
+        string SetURL(string inputURL)
+        {
+            string curSerial = deviceCmd.GetSerailNum();
+            string plusURL=(string.IsNullOrEmpty(curSerial))? $"{deviceCmd.PriorSN}" : $"{curSerial}";
+            return inputURL+$"/{plusURL}";
+        }
+
         void btnControl(string curParam)
         {
             switch (curParam)
@@ -198,10 +206,10 @@ namespace MeterCi62App.ViewModel
                     }
                     lock(curURL)
                     {
-                        curURL = targetUrl;
+                        curURL = SetURL(targetUrl);
                         curD65OnlyMode = D65OnlyOn;
                     }
-                    string curMsg = (curD65OnlyMode) ? $"측정시 '{targetUrl}'로 D65만 전송됩니다." : $"측정시 '{targetUrl}'로 전송됩니다.";
+                    string curMsg = (curD65OnlyMode) ? $"측정시 '{curURL}'로 D65만 전송됩니다." : $"측정시 '{curURL}'로 전송됩니다.";
                     MessageBox.Show(
                                     curMsg,
                                     "알림",

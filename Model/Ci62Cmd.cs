@@ -15,6 +15,12 @@ namespace MeterCi62App.Model
     {
 
         string _priorSN = "027293";
+        public string PriorSN
+        {
+            get { return _priorSN; }
+            set { _priorSN = value; }
+        }
+
         public bool IsUsbMode { get; private set; }
 
         public bool IsDeviceConnected
